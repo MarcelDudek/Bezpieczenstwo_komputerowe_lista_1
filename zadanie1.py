@@ -30,7 +30,7 @@ class Cryptogram:
 
     def decoded_message(self, key: bytearray, key_cracked: bytearray):
         decoded = bytes(a ^ b for (a, b) in zip(self.__message, key))
-        text = decoded.decode('ascii', errors='ignore')
+        text = decoded.decode('utf-8', errors='ignore')
         for i in range(len(text)):
             if not key_cracked[i]:
                 text = text[:i] + '#' + text[i + 1:]
@@ -65,8 +65,8 @@ class Cracker:
         self.key = bytearray(max_len)
         self.key_cracked = bytearray(max_len)
         for i in range(len(self.__cryptograms)):
-            for j in range(i, len(self.__cryptograms)):
-                for k in range(j, len(self.__cryptograms)):
+            for j in range(i + 1, len(self.__cryptograms)):
+                for k in range(j + 1, len(self.__cryptograms)):
                     self.__crack_three(self.__cryptograms[i], self.__cryptograms[j], self.__cryptograms[k])
 
     def __crack_three(self, c1: Cryptogram, c2: Cryptogram, c3: Cryptogram):
@@ -79,11 +79,15 @@ class Cracker:
                     self.key_cracked[i] = 0xFF
 
     def __get_key(self, c1: int, c2: int, c3: int):
+        utf8_present = 0b10000000
         space_present = 0b01000000
         space = 0b00100000
         c1c2 = c1 ^ c2
         c1c3 = c1 ^ c3
         c2c3 = c2 ^ c3
+        # if c1c2 & utf8_present or c1c3 & utf8_present or c2c3 & utf8_present:  # utf-8 special char present
+        #     return None
+
         if c1c2 & space_present and c1c3 & space_present and c2c3 & space_present:  # impossible to distinguish
             return None
         elif c1c2 & space_present and c1c3 & space_present:  # c1 is space
