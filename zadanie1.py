@@ -2,7 +2,7 @@ import binascii
 
 class Cryptogram:
     def __init__(self):
-        self.message = bytearray()
+        self.__message = bytearray()
 
     def load(self, path):
         f = open(path)
@@ -16,22 +16,22 @@ class Cryptogram:
                 if bit == '1':
                     byte += 1 << shift
                 shift -= 1
-            self.message.append(byte)
+            self.__message.append(byte)
         f.close()
 
     def print(self):
-        print(binascii.hexlify(self.message))
+        print(binascii.hexlify(self.__message))
     
     def __len__(self):
-        return len(self.message)
+        return len(self.__message)
 
     def __getitem__(self, i):
-        return self.message[i]
+        return self.__message[i]
 
 
 class Cracker:
     def __init__(self):
-        self.cryptograms = []
+        self.__cryptograms = []
         self.key = bytearray()
         self.key_cracked = bytearray()
 
@@ -39,10 +39,10 @@ class Cracker:
         for path in paths:
             c = Cryptogram()
             c.load(path)
-            self.cryptograms.append(c)
+            self.__cryptograms.append(c)
 
     def print_all(self):
-        for c in self.cryptograms:
+        for c in self.__cryptograms:
             c.print()
 
     def crack(self):
@@ -51,15 +51,15 @@ class Cracker:
 
         # find out the max length of the key
         max_len = 0
-        for c in self.cryptograms:
+        for c in self.__cryptograms:
             if len(c) > max_len:
                 max_len = len(c)
         self.key = bytearray(max_len)
         self.key_cracked = bytearray(max_len)
-        for i in range(len(self.cryptograms)):
-            for j in range(i, len(self.cryptograms)):
-                for k in range(j, len(self.cryptograms)):
-                    self.__crack_three(self.cryptograms[i], self.cryptograms[j], self.cryptograms[k])
+        for i in range(len(self.__cryptograms)):
+            for j in range(i, len(self.__cryptograms)):
+                for k in range(j, len(self.__cryptograms)):
+                    self.__crack_three(self.__cryptograms[i], self.__cryptograms[j], self.__cryptograms[k])
 
     def __crack_three(self, c1: Cryptogram, c2: Cryptogram, c3: Cryptogram):
         l = min([len(c1), len(c2), len(c3)])
