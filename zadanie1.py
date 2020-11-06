@@ -115,7 +115,7 @@ paths = ['cryptograms/1.txt', 'cryptograms/2.txt', 'cryptograms/3.txt', 'cryptog
 'cryptograms/5.txt', 'cryptograms/6.txt', 'cryptograms/7.txt', 'cryptograms/8.txt',
 'cryptograms/9.txt', 'cryptograms/10.txt', 'cryptograms/11.txt', 'cryptograms/12.txt', 
 'cryptograms/13.txt', 'cryptograms/14.txt', 'cryptograms/15.txt', 'cryptograms/16.txt', 
-'cryptograms/17.txt', 'cryptograms/18.txt', 'cryptograms/19.txt', 'cryptograms/20.txt']
+'cryptograms/17.txt', 'cryptograms/18.txt', 'cryptograms/19.txt', 'cryptograms/20.txt', 'cryptograms/zad.txt']
 c.load_from_files(paths)
 # c.print_all()
 c.crack()
